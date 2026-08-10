@@ -21,6 +21,6 @@ public class CategoryEntity {
     @Column(name = "description", length = 500)
     private String description;
 
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ProductEntity> products;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductEntity> products;
 }
