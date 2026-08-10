@@ -37,4 +37,7 @@ public class ProductEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderItemEntity> orderItems;
 }

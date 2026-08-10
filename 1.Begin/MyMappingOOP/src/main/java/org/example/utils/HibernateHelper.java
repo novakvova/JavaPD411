@@ -25,6 +25,8 @@ public class HibernateHelper {
                     .addAnnotatedClass(ProductPhotoEntity.class) //вказали, що буде таблиця в БД
                     .addAnnotatedClass(UserEntity.class) //вказали, що буде таблиця в БД
                     .addAnnotatedClass(ReviewEntity.class) //вказали, що буде таблиця в БД
+                    .addAnnotatedClass(OrderEntity.class) //вказали, що буде таблиця в БД
+                    .addAnnotatedClass(OrderItemEntity.class) //вказали, що буде таблиця в БД
                     .buildMetadata()
                     .buildSessionFactory();
         } catch (Exception ex) {
