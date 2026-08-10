@@ -32,9 +32,9 @@ public class ProductEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ProductPhotoEntity> photos;
-//
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ReviewEntity> reviews;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductPhotoEntity> photos;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewEntity> reviews;
 }
