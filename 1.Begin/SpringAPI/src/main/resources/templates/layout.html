@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="uk"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор QR Codes</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gray-50">
+
+<header class="bg-white border-b border-gray-200 shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+
+            <!-- Логотип -->
+            <div class="flex items-center gap-2">
+                <a th:href="@{/}" class="flex items-center gap-2 text-xl font-bold text-gray-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                        <path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/>
+                    </svg>
+                    <span>QR<span class="text-indigo-600">Generator</span></span>
+                </a>
+            </div>
+
+            <!-- Меню (десктоп) -->
+            <div class="hidden md:flex items-center gap-8">
+                <a th:href="@{/}" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Головна</a>
+                <a th:href="@{/generate}" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Створити QR</a>
+                <a th:href="@{/history}" sec:authorize="isAuthenticated()" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Історія</a>
+                <a th:href="@{/about}" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Про нас</a>
+            </div>
+
+            <!-- Дії користувача (десктоп) -->
+            <div class="hidden md:flex items-center gap-3">
+                <div sec:authorize="isAuthenticated()" class="flex items-center gap-3">
+                    <span class="text-gray-600 text-sm" sec:authentication="name">Користувач</span>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors">
+                            Вийти
+                        </button>
+                    </form>
+                </div>
+                <div sec:authorize="!isAuthenticated()" class="flex items-center gap-3">
+                    <a th:href="@{/login}" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors">Увійти</a>
+                    <a th:href="@{/register}" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">Реєстрація</a>
+                </div>
+            </div>
+
+            <!-- Кнопка бургер-меню (мобільна версія) -->
+            <div class="md:hidden">
+                <button id="menu-toggle" type="button" class="text-gray-600 hover:text-indigo-600 focus:outline-none">
+                    <svg id="icon-open" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg id="icon-close" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Мобільне меню -->
+        <div id="mobile-menu" class="hidden md:hidden pb-4">
+            <div class="flex flex-col gap-1">
+                <a th:href="@{/}" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">Головна</a>
+                <a th:href="@{/generate}" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">Створити QR</a>
+                <a th:href="@{/history}" sec:authorize="isAuthenticated()" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">Історія</a>
+                <a th:href="@{/about}" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">Про нас</a>
+
+                <div class="border-t border-gray-200 mt-2 pt-2" sec:authorize="isAuthenticated()">
+                    <span class="block px-3 py-1 text-sm text-gray-500" sec:authentication="name">Користувач</span>
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="w-full text-left px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
+                            Вийти
+                        </button>
+                    </form>
+                </div>
+                <div class="border-t border-gray-200 mt-2 pt-2 flex flex-col gap-1" sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">Увійти</a>
+                    <a th:href="@{/register}" class="px-3 py-2 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 font-medium text-center">Реєстрація</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main layout:fragment="content">
+</main>
+
+<script>
+    const toggleBtn = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('icon-open');
+    const iconClose = document.getElementById('icon-close');
+
+    toggleBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        iconOpen.classList.toggle('hidden');
+        iconClose.classList.toggle('hidden');
+    });
+</script>
+</body>
+</html>
