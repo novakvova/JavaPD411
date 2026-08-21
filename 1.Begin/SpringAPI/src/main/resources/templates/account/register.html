@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{layout}">
 <head>
-    <title>Вхід</title>
+    <title>Реєстрація</title>
 </head>
 <div layout:fragment="content">
 
@@ -18,37 +18,49 @@
                 <div class="text-center mb-8">
                     <div class="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-indigo-600 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
                         </svg>
                     </div>
-                    <h1 class="text-2xl font-bold text-gray-900">Вхід до акаунту</h1>
-                    <p class="text-gray-500 text-sm mt-1">Введіть свої дані, щоб продовжити</p>
+                    <h1 class="text-2xl font-bold text-gray-900">Створення акаунту</h1>
+                    <p class="text-gray-500 text-sm mt-1">Заповніть дані, щоб зареєструватися</p>
                 </div>
 
                 <!-- Повідомлення про помилку -->
-                <div th:if="${param.error}" class="mb-6 flex items-start gap-3 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
+                <div th:if="${error}" class="mb-6 flex items-start gap-3 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
-                    <p class="text-sm text-red-700">Невірний логін або пароль. Спробуйте ще раз.</p>
-                </div>
-
-                <!-- Повідомлення про успішний вихід -->
-                <div th:if="${param.logout}" class="mb-6 flex items-start gap-3 rounded-lg bg-green-50 border border-green-200 px-4 py-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <p class="text-sm text-green-700">Ви успішно вийшли з акаунту.</p>
+                    <p class="text-sm text-red-700" th:text="${error}">Помилка реєстрації.</p>
                 </div>
 
                 <!-- Форма -->
-                <form th:action="@{/login}" method="post" class="space-y-5">
+                <form th:action="@{/register}" th:object="${registerDto}" method="post" class="space-y-5">
 
-
-
-                    <!-- Email / Логін -->
+                    <!-- Ім'я користувача -->
                     <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1.5">Ім'я користувача</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                            <input
+                                    type="text"
+                                    id="username"
+                                    th:field="*{username}"
+                                    required
+                                    autofocus
+                                    placeholder="your_username"
+                                    class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                            />
+                        </div>
+                        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="mt-1 text-sm text-red-600"></p>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -56,23 +68,20 @@
                                 </svg>
                             </div>
                             <input
-                                    type="text"
-                                    id="username"
-                                    name="username"
+                                    type="email"
+                                    id="email"
+                                    th:field="*{email}"
                                     required
-                                    autofocus
                                     placeholder="you@example.com"
                                     class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                             />
                         </div>
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="mt-1 text-sm text-red-600"></p>
                     </div>
 
                     <!-- Пароль -->
                     <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
-                            <a th:href="@{/forgot-password}" class="text-sm text-indigo-600 hover:text-indigo-500 font-medium">Забули пароль?</a>
-                        </div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1.5">Пароль</label>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -82,31 +91,42 @@
                             <input
                                     type="password"
                                     id="password"
-                                    name="password"
+                                    th:field="*{password}"
                                     required
                                     placeholder="••••••••"
                                     class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
                             />
                         </div>
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="mt-1 text-sm text-red-600"></p>
                     </div>
 
-                    <!-- Запам'ятати мене -->
-                    <div class="flex items-center">
-                        <input
-                                type="checkbox"
-                                id="remember-me"
-                                name="remember-me"
-                                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <label for="remember-me" class="ml-2 text-sm text-gray-600">Запам'ятати мене</label>
+                    <!-- Підтвердження паролю -->
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1.5">Підтвердіть пароль</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    th:field="*{confirmPassword}"
+                                    required
+                                    placeholder="••••••••"
+                                    class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                            />
+                        </div>
+                        <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="mt-1 text-sm text-red-600"></p>
                     </div>
 
-                    <!-- Кнопка входу -->
+                    <!-- Кнопка реєстрації -->
                     <button
                             type="submit"
                             class="w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg text-white font-medium bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
                     >
-                        Увійти
+                        Зареєструватися
                     </button>
                 </form>
 
@@ -120,10 +140,10 @@
                     </div>
                 </div>
 
-                <!-- Посилання на реєстрацію -->
+                <!-- Посилання на вхід -->
                 <p class="text-center text-sm text-gray-600">
-                    Немає акаунту?
-                    <a th:href="@{/register}" class="text-indigo-600 hover:text-indigo-500 font-medium">Зареєструватися</a>
+                    Вже маєте акаунт?
+                    <a th:href="@{/login}" class="text-indigo-600 hover:text-indigo-500 font-medium">Увійти</a>
                 </p>
 
             </div>
