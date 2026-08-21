@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="uk"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+    <title>Вхід</title>
+</head>
+<div layout:fragment="content">
+
+    <div class="min-h-[80vh] flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+
+            <!-- Картка форми -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+
+                <!-- Заголовок -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-indigo-600 mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-900">Вхід до акаунту</h1>
+                    <p class="text-gray-500 text-sm mt-1">Введіть свої дані, щоб продовжити</p>
+                </div>
+
+                <!-- Повідомлення про помилку -->
+                <div th:if="${param.error}" class="mb-6 flex items-start gap-3 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p class="text-sm text-red-700">Невірний логін або пароль. Спробуйте ще раз.</p>
+                </div>
+
+                <!-- Повідомлення про успішний вихід -->
+                <div th:if="${param.logout}" class="mb-6 flex items-start gap-3 rounded-lg bg-green-50 border border-green-200 px-4 py-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <p class="text-sm text-green-700">Ви успішно вийшли з акаунту.</p>
+                </div>
+
+                <!-- Форма -->
+                <form th:action="@{/login}" method="post" class="space-y-5">
+
+
+
+                    <!-- Email / Логін -->
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9"/>
+                                </svg>
+                            </div>
+                            <input
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    required
+                                    autofocus
+                                    placeholder="you@example.com"
+                                    class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Пароль -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+                            <a th:href="@{/forgot-password}" class="text-sm text-indigo-600 hover:text-indigo-500 font-medium">Забули пароль?</a>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    required
+                                    placeholder="••••••••"
+                                    class="w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                            />
+                        </div>
+                    </div>
+
+                    <!-- Запам'ятати мене -->
+                    <div class="flex items-center">
+                        <input
+                                type="checkbox"
+                                id="remember-me"
+                                name="remember-me"
+                                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        />
+                        <label for="remember-me" class="ml-2 text-sm text-gray-600">Запам'ятати мене</label>
+                    </div>
+
+                    <!-- Кнопка входу -->
+                    <button
+                            type="submit"
+                            class="w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg text-white font-medium bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                    >
+                        Увійти
+                    </button>
+                </form>
+
+                <!-- Розділювач -->
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-3 bg-white text-gray-400">або</span>
+                    </div>
+                </div>
+
+                <!-- Посилання на реєстрацію -->
+                <p class="text-center text-sm text-gray-600">
+                    Немає акаунту?
+                    <a th:href="@{/register}" class="text-indigo-600 hover:text-indigo-500 font-medium">Зареєструватися</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>
