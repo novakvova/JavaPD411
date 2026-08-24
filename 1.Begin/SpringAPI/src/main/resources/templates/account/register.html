@@ -34,7 +34,7 @@
                 </div>
 
                 <!-- Форма -->
-                <form th:action="@{/register}" th:object="${registerDto}" method="post" class="space-y-5">
+                <form th:action="@{/register}" th:object="${registerDto}" method="post" class="space-y-5" enctype="multipart/form-data">
 
                     <!-- Ім'я користувача -->
                     <div>
@@ -121,6 +121,21 @@
                         <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="mt-1 text-sm text-red-600"></p>
                     </div>
 
+                    <div class="flex flex-col items-center">
+                        <label for="image" class="relative w-32 h-32 rounded-full overflow-hidden cursor-pointer group">
+                            <!-- прев’ю фото -->
+                            <img id="preview" src="https://wildlife.by/upload/sites/default/files/1_72.jpg"
+                                 class="w-full h-full object-cover rounded-full border border-green-300">
+
+                            <!-- чорний шар при наведенні -->
+                            <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                <span class="text-white font-semibold">Вибрати інше</span>
+                            </div>
+                        </label>
+                        <input id="image" name="image" type="file" accept="image/*" class="hidden" onchange="previewImage(event)">
+                    </div>
+
+
                     <!-- Кнопка реєстрації -->
                     <button
                             type="submit"
@@ -149,6 +164,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById('preview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 
 </div>
 </html>
